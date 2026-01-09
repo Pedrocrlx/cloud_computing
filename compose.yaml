@@ -5,7 +5,7 @@ services:
       - .env
     ports:
       - 5432:5432
-    healthcheck:
+    healthcheck: # wait until Postgres is ready to accept connections
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 1m30s
       timeout: 30s

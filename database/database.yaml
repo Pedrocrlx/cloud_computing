@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service  # Nome usado para conectar (ex: db-service no teu backend)
+  labels:
+    app: database
+spec:
+  ports:
+    - port: 5432
+      name: postgres
+  clusterIP: None   ## that turns this into a headless service
+  selector:
+    app: database
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: "db-service" # must match the metadata.name of the Service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database # must match the .spec.template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:17 # same version as compose.yaml file
+        ports:
+        - containerPort: 5432
+          name: postgres
+        args: ["-c", "log_statement=all"]
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        envFrom: # pull the environment variables from the secret created 'db-secret'
+        - secretRef:
+            name: db-secret
+        volumeMounts: 
+        - name: db-data
+          mountPath: /var/lib/postgresql/data
+
+  volumeClaimTemplates: # define the persistent volume for the database
+  - metadata:
+      name: db-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 1Gi
