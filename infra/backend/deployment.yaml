@@ -16,7 +16,7 @@ spec:
         app: backend
     spec:
       containers:
-      - image: backend:latest
+      - image: notedb-backend:latest
         name: backend
         imagePullPolicy: Never
         ports:
@@ -29,18 +29,3 @@ spec:
             name: db-secret
         resources: {}
 status: {}
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 8000        
-      targetPort: 8000

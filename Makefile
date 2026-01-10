@@ -1,16 +1,17 @@
-deploy:
+start:
 	minikube start
 	minikube addons enable registry
 	kubectl create secret generic db-secret --from-env-file=.env
 	kubectl apply -f database/database.yaml
-	kubectl apply -f backend/backend.yaml
-	kubectl apply -f frontend/frontend.yaml
-
+	
 pods:
 	kubectl get pods
 
-delete:
-	minikube delete
+## build images and deploy to minikube
+build:
+	docker build -t notedb-backend -f ./backend/Dockerfile ./backend
+	docker build -t notedb-frontend -f ./frontend/Dockerfile ./frontend
+	minikube image load notedb-backend notedb-frontend
 
 db-logs: # view the Postgres logs
 	kubectl logs db-0
