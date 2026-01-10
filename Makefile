@@ -19,4 +19,10 @@ db-logs: # view the Postgres logs
 db-shell: # access the Postgres shell
 	kubectl exec -it db-0 -- psql -U postgres -d notedb
 
+install:
+	chmod +x scripts/install.sh
+	scripts/install.sh
 
+deploy:
+	chmod +x scripts/deploy.sh
+	scripts/deploy.sh

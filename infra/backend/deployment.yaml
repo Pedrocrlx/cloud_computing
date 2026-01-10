@@ -16,7 +16,7 @@ spec:
         app: backend
     spec:
       containers:
-      - image: notedb-backend:latest
+      - image: notes-backend:latest
         name: backend
         imagePullPolicy: Never
         ports:
