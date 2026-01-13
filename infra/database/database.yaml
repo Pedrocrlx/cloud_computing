@@ -19,7 +19,7 @@ kind: StatefulSet
 metadata:
   name: db
 spec:
-  serviceName: "db-service" # Must match the metadata.name of the Service
+  serviceName: db-service # Must match the metadata.name of the Service
   replicas: 1
   selector:
     matchLabels:

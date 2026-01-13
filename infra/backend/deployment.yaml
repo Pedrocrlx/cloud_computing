@@ -23,7 +23,7 @@ spec:
         - containerPort: 8000
         env:
         - name: DB_HOST
-          value: "db-service" 
+          value: "db-service.default.svc.cluster.local"
         envFrom:
         - secretRef:
             name: db-secret
