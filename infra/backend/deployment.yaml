@@ -16,7 +16,7 @@ spec:
         app: backend
     spec:
       containers:
-      - image: notes-backend:latest
+      - image: notes-backend:1.0
         name: backend
         imagePullPolicy: Never
         ports:

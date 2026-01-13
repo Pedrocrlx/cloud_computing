@@ -1,22 +1,21 @@
 #!/bin/bash
-echo "A iniciar o ambiente..."
+echo "Starting environment..."
 
 minikube start
 
-echo " A ativar o Ingress..."
+echo "Enabling Ingress..."
 minikube addons enable ingress
 
-echo " A ativar o Registry..."
+echo "Enabling Registry..."
 minikube addons enable registry
 
-echo " A construir imagens..."
-docker build -t notes-backend -f ./backend/Dockerfile ./backend
-docker build -t notes-frontend -f ./frontend/Dockerfile ./frontend
+echo "Building images..."
+docker build -t notes-backend:1.0 -f ./backend/Dockerfile ./backend
+docker build -t notes-frontend:1.0 -f ./frontend/Dockerfile ./frontend
 
-echo " A carregar imagens no Minikube..."
-minikube image load notes-backend notes-frontend
-
-echo " A criar segredo para a base de dados..."
+echo "Loading images into Minikube..."
+minikube image load notes-backend:1.0 notes-frontend:1.0
+echo "Creating database secret..."
 kubectl create secret generic db-secret --from-env-file=.env
 
-echo "✅ Instalação concluída!"
+echo "✅ Installation complete!"

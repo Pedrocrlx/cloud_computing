@@ -16,7 +16,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: notes-frontend:latest
+      - image: notes-frontend:1.0
         name: notes-frontend
         imagePullPolicy: Never
         ports:
